@@ -5,15 +5,25 @@
         <h2 class="mb-4">Horas Diarias</h2>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
+            <!-- Flecha Mes Anterior -->
             <a href="{{ route('workdays.index', ['year' => $prevMonth->year, 'month' => $prevMonth->month]) }}"
-                class="btn btn-outline-secondary">
+                class="btn btn-outline-success">
                 <i class="bi bi-chevron-left"></i> Mes Anterior
             </a>
-            <h4>{{ $currentMonth }}</h4>
-            <a href="{{ route('workdays.index', ['year' => $nextMonth->year, 'month' => $nextMonth->month]) }}"
-                class="btn btn-outline-secondary">
-                Mes Siguiente <i class="bi bi-chevron-right"></i>
-            </a>
+
+            <h4>{{ ucfirst($currentMonth) }}</h4>
+
+            <!-- Flecha Mes Siguiente -->
+            @if ($isCurrentMonth)
+                <button class="btn btn-outline-secondary" disabled>
+                    Mes Siguiente <i class="bi bi-chevron-right"></i>
+                </button>
+            @else
+                <a href="{{ route('workdays.index', ['year' => $nextMonth->year, 'month' => $nextMonth->month]) }}"
+                    class="btn btn-outline-success">
+                    Mes Siguiente <i class="bi bi-chevron-right"></i>
+                </a>
+            @endif
         </div>
 
         <table class="table table-bordered">
@@ -32,7 +42,7 @@
                         <td>{{ \Carbon\Carbon::parse($workday['date'])->format('d') }} -
                             {{ ucfirst($workday['day_of_week']) }}</td>
                         <td>{{ $workday['start_time'] }}</td>
-                        <td>{{ $workday['end_time'] ?? '--:--' }}</td>
+                        <td>{{ $workday['end_time'] }}</td>
                         <td>{{ $workday['break_minutes'] }} minutos</td>
                         <td>{{ $workday['total_hours'] }}</td>
                     </tr>
@@ -43,5 +53,6 @@
                 @endforelse
             </tbody>
         </table>
+
     </div>
 @endsection

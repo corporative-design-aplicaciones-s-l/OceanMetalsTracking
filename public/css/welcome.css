@@ -1,0 +1,34 @@
+/* Eliminar márgenes y paddings del body */
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Configuración del fondo en welcome */
+.welcome-background {
+    height: 100vh;
+    width: 100vw;
+    background-image: url("../images/landing/background.png");
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+/* Superponer el navbar sin ocupar espacio */
+.navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+/* Configuración del texto superpuesto en el fondo */
+.overlay-text {
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+}

@@ -10,6 +10,7 @@
     <title>{{ config('app.name', 'Tick Track') }}</title>
     <!-- Vite and CSS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @yield('head')
 </head>
 
 <body>
