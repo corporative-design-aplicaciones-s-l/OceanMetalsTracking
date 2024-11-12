@@ -111,6 +111,9 @@ class WorkdayController extends Controller
     // Método para registrar el descanso
     public function applyBreak(Request $request)
     {
+
+        // TODO: ajustar los minutos de descanso para que no se acumulen e ir descontando de los minutos totales del dia
+
         $user = Auth::user();
         $newBreakMinutes = $request->input('break_minutes');
 
