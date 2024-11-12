@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VacationController;
 use App\Http\Controllers\WorkdayController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,10 +15,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/vacation', function () {
-        return view('vacation'); // Asegúrate de tener esta vista creada
-    })->name('vacation');
-
     // PROFILE ROUTES
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -29,5 +26,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/workday/break', [WorkdayController::class, 'applyBreak'])->name('workday.break');
     Route::get('/workday/status', [WorkdayController::class, 'checkWorkStatus'])->name('workday.status');
 
+    // VACATIONS ROUTES AND FUNCTIONS
+    Route::get('/vacations', [VacationController::class, 'index'])->name('vacations.index');
+    Route::post('/vacations', [VacationController::class, 'store'])->name('vacations.store');
 
 });

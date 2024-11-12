@@ -84,5 +84,14 @@
 @endsection
 
 @section('scripts')
+    <script>
+        function toggleEditMode() {
+            // Alterna entre el modo de visualización y el modo de edición
+            const viewMode = document.getElementById('viewMode');
+            const editMode = document.getElementById('editMode');
+            viewMode.classList.toggle('d-none');
+            editMode.classList.toggle('d-none');
+        }
+    </script>
     <script src="{{ asset('js/calendar.js') }}"></script>
 @endsection

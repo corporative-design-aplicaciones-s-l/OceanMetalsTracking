@@ -7,6 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+
+    <!-- Incluir Bootstrap JS y sus dependencias (Popper) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+
     <title>{{ config('app.name', 'Tick Track') }}</title>
     <!-- Vite and CSS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -51,7 +56,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('vacation') }}" data-bs-toggle="tooltip"
+                            <a class="nav-link" href="{{ route('vacations.index') }}" data-bs-toggle="tooltip"
                                 data-bs-placement="bottom" title="Registro de Vacaciones">
                                 <i class="bi bi-calendar3"></i>
                             </a>
