@@ -14,7 +14,7 @@
                 <button id="startButton" class="btn btn-danger mb-2" onclick="startWork()">
                     <i class="bi bi-hourglass-split"></i> Empezar jornada laboral
                 </button>
-                <button id="endButton" class="btn btn-info mb-2 d-none" onclick="toggleButtons()">
+                <button id="endButton" class="btn btn-info mb-2 d-none" onclick="endWork()">
                     <i class="bi bi-hourglass-split"></i> Terminar jornada laboral
                 </button>
 
@@ -49,8 +49,8 @@
 @section('scripts')
     <script>
         let endTime;
-        let totalBreakMinutes = 0; // Almacena el total de minutos de descanso aplicados
-        const maxBreakMinutes = 180; // Máximo de descanso permitido al día
+        let totalBreakMinutes = 0;
+        const maxBreakMinutes = 180;
 
         function toggleButtons() {
             const startButton = document.getElementById('startButton');
@@ -65,23 +65,37 @@
         function startWork() {
             toggleButtons();
 
-            // Obtener la hora actual y mostrarla como hora de inicio
             const startTime = new Date();
             document.getElementById('startTime').innerText = formatTime(startTime);
 
-            // Calcular la hora de fin estimada (asumimos una jornada de 8 horas)
-            endTime = new Date(startTime.getTime() + 8 * 60 * 60 * 1000); // 8 horas en milisegundos
+            endTime = new Date(startTime.getTime() + 8 * 60 * 60 * 1000);
             document.getElementById('endTime').innerText = formatTime(endTime);
+
+            // Registrar inicio en la base de datos
+            fetch('{{ route('workday.start') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                }).then(response => response.json())
+                .then(data => console.log(data));
         }
 
-        function formatTime(date) {
-            const hours = String(date.getHours()).padStart(2, '0');
-            const minutes = String(date.getMinutes()).padStart(2, '0');
-            return `${hours}:${minutes}`;
+        function endWork() {
+            toggleButtons();
+
+            fetch('{{ route('workday.end') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                }).then(response => response.json())
+                .then(data => console.log(data));
         }
 
         function updateBreakTime() {
-            // Actualiza el valor mostrado del intervalo de descanso en minutos
             const breakSlider = document.getElementById('breakSlider');
             const breakTimeDisplay = document.getElementById('breakTimeDisplay');
             breakTimeDisplay.innerText = breakSlider.value;
@@ -91,30 +105,41 @@
             const breakSlider = document.getElementById('breakSlider');
             const breakMinutes = parseInt(breakSlider.value);
 
-            // Verificar si el total acumulado + el descanso actual no supera el máximo permitido
             if (totalBreakMinutes + breakMinutes > maxBreakMinutes) {
                 alert("No puedes exceder el máximo de 180 minutos de descanso al día.");
                 return;
             }
 
-            // Añadir el descanso al total acumulado
             totalBreakMinutes += breakMinutes;
 
-            // Actualizar la hora de fin estimada
+            fetch('{{ route('workday.break') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        break_minutes: breakMinutes
+                    })
+                }).then(response => response.json())
+                .then(data => console.log(data));
+
             endTime = new Date(endTime.getTime() + breakMinutes * 60 * 1000);
             document.getElementById('endTime').innerText = formatTime(endTime);
-
-            // Actualizar el tiempo de descanso restante
             updateRemainingBreak();
         }
 
         function updateRemainingBreak() {
-            // Calcula y muestra el tiempo de descanso restante
             const remainingMinutes = maxBreakMinutes - totalBreakMinutes;
             document.getElementById('remainingMinutes').innerText = remainingMinutes;
         }
 
-        // Inicializar el tiempo de descanso restante al cargar la página
+        function formatTime(date) {
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${hours}:${minutes}`;
+        }
+
         updateRemainingBreak();
     </script>
 @endsection

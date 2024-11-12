@@ -14,11 +14,13 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding-bottom: 0px">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
+            <!-- Logo de la aplicación -->
             <a class="navbar-brand" href="{{ auth()->check() ? url('/home') : url('/') }}">
                 <img width="150px" height="auto" src="{{ asset('images/logo/logo_navbar.png') }}" alt="logo">
             </a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -26,34 +28,50 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     @guest
-                        <!-- Mostrar estos enlaces si el usuario no está autenticado -->
+                        <!-- Enlaces solo para usuarios no autenticados -->
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">Iniciar Sesión</a>
+                            <a class="nav-link" href="{{ route('login') }}" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom" title="Iniciar Sesión">
+                                <i class="bi bi-box-arrow-in-right"></i>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">Registrarse</a>
+                            <a class="nav-link" href="{{ route('register') }}" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom" title="Registrarse">
+                                <i class="bi bi-person-plus"></i>
+                            </a>
                         </li>
                     @else
-                        <!-- Mostrar estos enlaces si el usuario está autenticado -->
+                        <!-- Enlaces solo para usuarios autenticados -->
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('profile.show') }}">
-                                <i class="bi bi-person-circle"></i> Perfil
+                            <a class="nav-link" href={{ route('home') }} data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                title="Inicio">
+                                <i class="bi bi-house-door"></i>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('vacation') }}">
-                                <i class="bi bi-calendar3"></i> Registro de Vacaciones
+                            <a class="nav-link" href="{{ route('vacation') }}" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom" title="Registro de Vacaciones">
+                                <i class="bi bi-calendar3"></i>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('daily_hours') }}">
-                                <i class="bi bi-clock-history"></i> Horas Diarias
+                            <a class="nav-link" href="{{ route('workdays.index') }}" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom" title="Horas Diarias">
+                                <i class="bi bi-clock-history"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('profile.show') }}" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom" title="Perfil">
+                                <i class="bi bi-person-circle"></i>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('logout') }}"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cerrar Sesión">
+                                <i class="bi bi-box-arrow-right"></i>
                             </a>
                         </li>
                         <!-- Formulario de cierre de sesión (necesario para hacer logout con seguridad) -->
@@ -72,6 +90,15 @@
 
     @yield('scripts')
 
+    <!-- Activar tooltips -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+        });
+    </script>
 </body>
 
 </html>
