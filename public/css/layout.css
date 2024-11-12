@@ -1,0 +1,12 @@
+/* Aumentar tamaño de los íconos en el navbar */
+.navbar-nav .nav-link i {
+    font-size: 1.5rem; /* Ajusta el tamaño según tus necesidades */
+}
+
+/* Sombra para el logo del navbar */
+/* Sombra para el logo del navbar que sigue la forma del PNG */
+.navbar-brand img {
+    filter: drop-shadow(
+        0px 4px 8px rgba(0, 0, 0, 0.5)
+    ); /* Ajusta la sombra a tus necesidades */
+}

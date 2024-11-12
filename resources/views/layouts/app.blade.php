@@ -13,6 +13,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
 
     <title>{{ config('app.name', 'Tick Track') }}</title>
+    <link rel="stylesheet" href="{{ asset('css/layout.css') }}">
+
     <!-- Vite and CSS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @yield('head')
