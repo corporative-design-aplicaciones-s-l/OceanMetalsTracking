@@ -5,13 +5,16 @@
         <h2 class="mb-4">Control Jornada Laboral</h2>
         <h4><strong>Trabajador:</strong> {{ Auth::user()->name }}</h4>
 
+        <!-- Contenedor de alertas flotantes -->
+        <div id="alertContainer" class="floating-alert-container"></div>
+
         <!-- Sección Jornada Laboral -->
         <div class="card my-4">
             <div class="card-header">
                 <i class="bi bi-briefcase"></i> Jornada laboral
             </div>
             <div class="card-body text-center">
-                <button id="startButton" class="btn btn-danger mb-2" onclick="startWork()">
+                <button id="startButton" class="btn btn-danger mb-2 d-none" onclick="startWork()">
                     <i class="bi bi-hourglass-split"></i> Empezar jornada laboral
                 </button>
                 <button id="endButton" class="btn btn-info mb-2 d-none" onclick="endWork()">
@@ -47,99 +50,8 @@
 @endsection
 
 @section('scripts')
-    <script>
-        let endTime;
-        let totalBreakMinutes = 0;
-        const maxBreakMinutes = 180;
-
-        function toggleButtons() {
-            const startButton = document.getElementById('startButton');
-            const endButton = document.getElementById('endButton');
-            const workTimeInfo = document.getElementById('workTimeInfo');
-
-            startButton.classList.toggle('d-none');
-            endButton.classList.toggle('d-none');
-            workTimeInfo.classList.toggle('d-none');
-        }
-
-        function startWork() {
-            toggleButtons();
-
-            const startTime = new Date();
-            document.getElementById('startTime').innerText = formatTime(startTime);
-
-            endTime = new Date(startTime.getTime() + 8 * 60 * 60 * 1000);
-            document.getElementById('endTime').innerText = formatTime(endTime);
-
-            // Registrar inicio en la base de datos
-            fetch('{{ route('workday.start') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                }).then(response => response.json())
-                .then(data => console.log(data));
-        }
-
-        function endWork() {
-            toggleButtons();
-
-            fetch('{{ route('workday.end') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                }).then(response => response.json())
-                .then(data => console.log(data));
-        }
-
-        function updateBreakTime() {
-            const breakSlider = document.getElementById('breakSlider');
-            const breakTimeDisplay = document.getElementById('breakTimeDisplay');
-            breakTimeDisplay.innerText = breakSlider.value;
-        }
-
-        function applyBreak() {
-            const breakSlider = document.getElementById('breakSlider');
-            const breakMinutes = parseInt(breakSlider.value);
-
-            if (totalBreakMinutes + breakMinutes > maxBreakMinutes) {
-                alert("No puedes exceder el máximo de 180 minutos de descanso al día.");
-                return;
-            }
-
-            totalBreakMinutes += breakMinutes;
-
-            fetch('{{ route('workday.break') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        break_minutes: breakMinutes
-                    })
-                }).then(response => response.json())
-                .then(data => console.log(data));
-
-            endTime = new Date(endTime.getTime() + breakMinutes * 60 * 1000);
-            document.getElementById('endTime').innerText = formatTime(endTime);
-            updateRemainingBreak();
-        }
-
-        function updateRemainingBreak() {
-            const remainingMinutes = maxBreakMinutes - totalBreakMinutes;
-            document.getElementById('remainingMinutes').innerText = remainingMinutes;
-        }
-
-        function formatTime(date) {
-            const hours = String(date.getHours()).padStart(2, '0');
-            const minutes = String(date.getMinutes()).padStart(2, '0');
-            return `${hours}:${minutes}`;
-        }
-
-        updateRemainingBreak();
-    </script>
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- Cargar el archivo JavaScript externo -->
+    <script src="{{ asset('js/workday.js') }}"></script>
 @endsection

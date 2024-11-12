@@ -26,5 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/workday/start', [WorkdayController::class, 'startWork'])->name('workday.start');
     Route::post('/workday/end', [WorkdayController::class, 'endWork'])->name('workday.end');
     Route::post('/workday/break', [WorkdayController::class, 'applyBreak'])->name('workday.break');
+    Route::get('/workday/status', [WorkdayController::class, 'checkWorkStatus'])->name('workday.status');
+
 
 });

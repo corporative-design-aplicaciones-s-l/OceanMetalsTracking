@@ -104,4 +104,23 @@ class WorkdayController extends Controller
 
         return response()->json(['status' => 'success', 'message' => 'Descanso aplicado', 'workday' => $workday]);
     }
+
+    // Método para verificar el estado de la jornada
+    public function checkWorkStatus()
+    {
+        $user = Auth::user();
+        $today = Carbon::now()->toDateString();
+
+        // Buscar si el usuario tiene una jornada iniciada y sin terminar para el día actual
+        $workday = Workday::where('user_id', $user->id)
+            ->where('date', $today)
+            ->whereNull('end_time')
+            ->first();
+
+        if ($workday) {
+            return response()->json(['status' => 'started', 'start_time' => $workday->start_time]);
+        } else {
+            return response()->json(['status' => 'not_started']);
+        }
+    }
 }

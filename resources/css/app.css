@@ -1,1 +1,24 @@
 @import "../../node_modules/bootswatch/dist/solar/bootstrap.min.css";
+
+
+/* Contenedor de alertas flotantes centrado */
+.floating-alert-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    z-index: 1050;
+    display: flex;
+    justify-content: center;
+}
+
+.floating-alert {
+    width: 100%;
+    max-width: 600px;
+}
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+}
