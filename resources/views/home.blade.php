@@ -42,7 +42,7 @@
                 </div>
 
                 <!-- Sección Descanso -->
-                <div class="card my-4">
+                <div class="card ">
                     <div class="card-header">
                         <i class="bi bi-cup-fill"></i> Descanso (intervalo de descanso)
                     </div>
@@ -61,7 +61,7 @@
 
             <!-- Columna Derecha: Calendario -->
             <div class="col-md-6">
-                <div class="card my-4">
+                <div class="card h-100">
                     <div class="card-header">
                         <i class="bi bi-calendar3"></i> Calendario
                     </div>

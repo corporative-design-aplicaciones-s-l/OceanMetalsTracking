@@ -33,7 +33,7 @@ function generateCalendar() {
     headerDiv.appendChild(nextButton);
     calendar.appendChild(headerDiv);
 
-    const daysOfWeek = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+    const daysOfWeek = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
     const table = document.createElement('table');
     table.className = "table table-bordered";
 
@@ -45,7 +45,7 @@ function generateCalendar() {
     });
     table.appendChild(headerRow);
 
-    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+    const firstDay = new Date(currentYear, currentMonth, 7).getDay();
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
     let date = 1;
