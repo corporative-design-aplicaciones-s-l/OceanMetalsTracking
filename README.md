@@ -1,7 +1,6 @@
 # Tick Track
 
 **Autor:** [Maximiliano Serratosa](https://github.com/Trollkopf)  
-**Repositorio:** [https://github.com/Trollkopf/TickTrack](https://github.com/Trollkopf/ticktrack)
 
 ## Descripción
 
