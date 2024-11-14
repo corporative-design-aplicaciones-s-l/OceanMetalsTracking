@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VacationController;
 use App\Http\Controllers\WorkdayController;
+use App\Http\Controllers\Admin\WorkerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -29,5 +31,16 @@ Route::middleware('auth')->group(function () {
     // VACATIONS ROUTES AND FUNCTIONS
     Route::get('/vacations', [VacationController::class, 'index'])->name('vacations.index');
     Route::post('/vacations', [VacationController::class, 'store'])->name('vacations.store');
+
+    // ADMIN ROUTES AND FUNCTIONS
+    Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+        Route::get('workers', [WorkerController::class, 'index'])->name('workers.index');
+        Route::get('create_worker', [WorkerController::class, 'createWorker'])->name('create_worker');
+        Route::get('workers/{worker}/edit', [WorkerController::class, 'edit'])->name('workers.edit');
+        Route::delete('workers/{worker}', [WorkerController::class, 'destroy'])->name('workers.destroy');
+        Route::post('register-worker', [WorkerController::class, 'registerWorker'])->name('registerWorker');
+    });
+
 
 });
