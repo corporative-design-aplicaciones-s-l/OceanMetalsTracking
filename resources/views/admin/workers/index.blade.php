@@ -1,6 +1,6 @@
 @extends('layouts.admin-layout')
 
-@section('admin-content')
+@section('content')
     <h2 class="my-4">Listado de Trabajadores</h2>
 
     <!-- Tabla de Trabajadores -->

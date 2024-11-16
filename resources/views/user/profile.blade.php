@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends(Auth::user()->role === 'admin' ? 'layouts.admin-layout' : 'layouts.app')
 
 @section('content')
     <div class="container">
@@ -19,7 +19,9 @@
                         <!-- Modo Visualización -->
                         <div id="viewMode">
                             <p><strong>Nombre:</strong> <span id="displayName">{{ $user->name }}</span></p>
+                            <p><strong>Apellidos:</strong> <span id="displayLastName">{{ $user->last_name }}</span></p>
                             <p><strong>Correo Electrónico:</strong> <span id="displayEmail">{{ $user->email }}</span></p>
+                            <p><strong>Teléfono:</strong> <span id="displayPhone">{{ $user->telefono }}</span></p>
                         </div>
                         <!-- Modo Edición -->
                         <form id="editMode" action="{{ route('profile.update') }}" method="POST" class="d-none">
@@ -35,10 +37,31 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
+                                <label for="last_name" class="form-label">Apellidos</label>
+                                <input type="text" class="form-control @error('last_name') is-invalid @enderror"
+                                    id="last_name" name="last_name" value="{{ old('last_name', $user->last_name) }}"
+                                    required>
+                                @error('last_name')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
                                 <label for="email" class="form-label">Correo Electrónico</label>
                                 <input type="email" class="form-control @error('email') is-invalid @enderror"
                                     id="email" name="email" value="{{ old('email', $user->email) }}" required>
                                 @error('email')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Teléfono</label>
+                                <input type="text" class="form-control @error('telefono') is-invalid @enderror"
+                                    id="telefono" name="telefono" value="{{ old('phone', $user->telefono) }}" required>
+                                @error('telefono')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>

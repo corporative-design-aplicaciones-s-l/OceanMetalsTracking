@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminVacationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VacationController;
 use App\Http\Controllers\WorkdayController;
@@ -40,6 +41,9 @@ Route::middleware('auth')->group(function () {
         Route::get('workers/{worker}/edit', [WorkerController::class, 'edit'])->name('workers.edit');
         Route::delete('workers/{worker}', [WorkerController::class, 'destroy'])->name('workers.destroy');
         Route::post('register-worker', [WorkerController::class, 'registerWorker'])->name('registerWorker');
+        Route::get('/vacations', [AdminVacationController::class, 'index'])->name('vacations');
+        Route::post('/vacations/{id}/validate', [AdminVacationController::class, 'validateVacations']);
+        Route::post('/vacations/{id}/decline', [AdminVacationController::class, 'declineVacations']);
     });
 
 

@@ -54,7 +54,7 @@ class LoginController extends Controller
         }
 
         // Redirigir a panel de trabajador si el usuario es trabajador
-        return redirect()->route('worker.dashboard');
+        return redirect()->route('home');
     }
 
 }

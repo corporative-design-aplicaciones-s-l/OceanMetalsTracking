@@ -46,13 +46,18 @@
                         </a>
                     </li>
                     <li class="nav-item mb-0">
-                        <a class="nav-link text-light" href="#">
+                        <a class="nav-link text-light" href="{{ route('admin.vacations') }}">
                             <i class="bi bi-calendar-check" style="font-size: 2rem;"></i>
                         </a>
                     </li>
                     <li class="nav-item mb-0">
                         <a class="nav-link text-light" href="#">
                             <i class="bi bi-gear-fill" style="font-size: 2rem;"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-0">
+                        <a class="nav-link text-light" href="{{ route('profile.show') }}">
+                            <i class="bi bi-person-circle" style="font-size: 2rem;"></i>
                         </a>
                     </li>
                     <li class="nav-item mb-0">
@@ -71,7 +76,7 @@
 
             <!-- Contenido Principal -->
             <div class="col-md-11 py-4" style="overflow-y: auto; max-height: calc(100vh - 56px);">
-                @yield('admin-content')
+                @yield('content')
             </div>
         </div>
     </div>
