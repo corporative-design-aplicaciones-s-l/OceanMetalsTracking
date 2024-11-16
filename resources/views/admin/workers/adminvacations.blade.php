@@ -104,7 +104,7 @@
                             <tr>
                                 <td>{{ $vacation->user->name }}</td>
                                 <td>{{ $vacation->user->last_name }}</td>
-                                <td>{{ \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($vacation->end_date)) }}
+                                <td>{{ \Carbon\Carbon::now()->startOfDay()->diffInDays(\Carbon\Carbon::parse($vacation->end_date)) }}
                                     días</td>
                                 <td>{{ \Carbon\Carbon::parse($vacation->end_date)->format('d/m/Y') }}</td>
                             </tr>
