@@ -23,7 +23,7 @@ class VacationController extends Controller
         $requestedDays = $vacations->where('validated', false)->sum('total_days');
 
         // Obtener Array de los días de vacaciones
-        $vacationDates = self::getVacationDates();
+        $vacationDates = self::getVacationDates($user->id);
 
         // Días disfrutados (confirmados) y días restantes considerando confirmados y solicitados
         $usedDays = $confirmedDays;
@@ -67,9 +67,11 @@ class VacationController extends Controller
         return redirect()->route('vacations.index')->with('success', 'Solicitud de vacaciones enviada.');
     }
 
-    protected function getVacationDates()
+    protected function getVacationDates($userId)
     {
-        $vacations = Vacation::where('validated', true)->get();
+        $vacations = Vacation::where('user_id', $userId)
+            ->where('validated', true)
+            ->get();
 
         $vacationDates = [];
 
