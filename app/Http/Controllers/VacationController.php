@@ -17,9 +17,13 @@ class VacationController extends Controller
         // Obtener todas las vacaciones del usuario
         $vacations = Vacation::where('user_id', $user->id)->get();
 
+
         // Calcular días de vacaciones confirmados y solicitados
         $confirmedDays = $vacations->where('validated', true)->sum('total_days');
         $requestedDays = $vacations->where('validated', false)->sum('total_days');
+
+        // Obtener Array de los días de vacaciones
+        $vacationDates = self::getVacationDates();
 
         // Días disfrutados (confirmados) y días restantes considerando confirmados y solicitados
         $usedDays = $confirmedDays;
@@ -31,7 +35,7 @@ class VacationController extends Controller
             'usedDays' => $usedDays,
             'requestedDays' => $requestedDays,
             'confirmedDays' => $confirmedDays,
-            'vacationDates' => $vacations->where('validated', true)->pluck('start_date', 'end_date')
+            'vacationDates' => $vacationDates,
         ]);
     }
 
@@ -61,5 +65,25 @@ class VacationController extends Controller
         ]);
 
         return redirect()->route('vacations.index')->with('success', 'Solicitud de vacaciones enviada.');
+    }
+
+    protected function getVacationDates()
+    {
+        $vacations = Vacation::where('validated', true)->get();
+
+        $vacationDates = [];
+
+        foreach ($vacations as $vacation) {
+            $start = Carbon::parse($vacation->start_date);
+            $end = Carbon::parse($vacation->end_date);
+
+            // Generar todas las fechas entre start_date y end_date
+            while ($start <= $end) {
+                $vacationDates[] = $start->format('Y-m-d'); // Formato ISO para comparación en JavaScript
+                $start->addDay();
+            }
+        }
+
+        return $vacationDates;
     }
 }

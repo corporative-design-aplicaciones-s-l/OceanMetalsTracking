@@ -66,8 +66,8 @@ function generateCalendar() {
                 const formattedDate = currentDate.toISOString().split('T')[0];
 
                 // Marcar las vacaciones en el calendario
-                if (vacations.includes(formattedDate)) {
-                    cell.classList.add("bg-warning", "text-dark"); // Marca de color amarillo para vacaciones
+                if (Array.isArray(vacations) && vacations.includes(formattedDate)) {
+                    cell.classList.add("bg-success", "text-dark"); // Marca de color amarillo para vacaciones
                 }
 
                 const today = new Date();

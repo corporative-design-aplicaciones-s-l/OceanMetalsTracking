@@ -62,11 +62,10 @@
     <!-- Cargar el archivo JavaScript externo -->
     <script src="{{ asset('js/calendar.js') }}"></script>
     <script>
-        // Pasar las fechas de vacaciones al calendario
-        const vacationDates = @json($vacationDates);
-        setVacations(vacationDates);
-
-        // Generar el calendario con las fechas de vacaciones
-        document.addEventListener('DOMContentLoaded', generateCalendar);
+        document.addEventListener('DOMContentLoaded', () => {
+            const vacationDates = @json($vacationDates); // Pasar datos desde PHP
+            setVacations(vacationDates); // Llamar a la función con las fechas generadas
+            generateCalendar(); // Renderizar el calendario
+        });
     </script>
 @endsection
