@@ -111,50 +111,29 @@ class WorkdayController extends Controller
     // Método para registrar el descanso
     public function applyBreak(Request $request)
     {
-
-        // TODO: ajustar los minutos de descanso para que no se acumulen e ir descontando de los minutos totales del dia
-
         $user = Auth::user();
-        $newBreakMinutes = $request->input('break_minutes');
+        $breakMinutes = $request->input('break_minutes');
 
-        // Validar que los minutos de descanso sean positivos
-        if ($newBreakMinutes <= 0) {
-            return response()->json(['status' => 'error', 'message' => 'El descanso debe ser positivo.'], 400);
-        }
-
-        // Calcular el total de minutos de descanso acumulados en todas las jornadas de hoy
-        $totalBreakMinutesToday = Workday::where('user_id', $user->id)
-            ->whereDate('date', Carbon::now()->toDateString())
-            ->sum('break_minutes');
-
-        // Calcular el descanso restante que se puede aplicar para no superar los 180 minutos diarios
-        $remainingBreakMinutes = 180 - $totalBreakMinutesToday;
-
-        // Si el nuevo descanso excede el límite de 180 minutos, ajustar el valor a los minutos restantes
-        if ($newBreakMinutes > $remainingBreakMinutes) {
-            return response()->json([
-                'status' => 'warning',
-                'message' => "No puedes exceder el máximo de 180 minutos de descanso. Te quedan $remainingBreakMinutes minutos.",
-            ], 400);
-        }
-
-        // Obtener la jornada laboral actual del día, la última jornada sin `end_time`
+        // Encontrar la jornada laboral del día actual para el usuario
         $workday = Workday::where('user_id', $user->id)
-            ->whereDate('date', Carbon::now()->toDateString())
-            ->whereNull('end_time')
-            ->orderBy('start_time', 'desc')
+            ->where('date', Carbon::now()->toDateString())
             ->first();
 
         if ($workday) {
-            // Solo añadimos los nuevos minutos de descanso al registro actual
-            $workday->break_minutes += $newBreakMinutes;
+            // Registrar la hora de inicio del descanso si no existe
+            if (!$workday->break_start_time) {
+                $workday->break_start_time = Carbon::now();
+            }
+
+            // Actualizar los minutos de descanso, sin superar 180 minutos en total
+            $workday->break_minutes = min($workday->break_minutes + $breakMinutes, 180);
             $workday->save();
         }
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Descanso aplicado exitosamente',
-            'remaining_minutes' => $remainingBreakMinutes - $newBreakMinutes
+            'message' => 'Descanso aplicado',
+            'workday' => $workday,
         ]);
     }
 

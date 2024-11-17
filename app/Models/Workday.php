@@ -11,10 +11,11 @@ class Workday extends Model
 
     // Permitir asignación masiva para estos campos
     protected $fillable = [
-        'user_id',  // Agrega 'user_id' aquí
+        'user_id',
         'date',
         'start_time',
         'end_time',
         'break_minutes',
+        'break_start_time',
     ];
 }

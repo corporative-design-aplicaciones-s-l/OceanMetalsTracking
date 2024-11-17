@@ -20,8 +20,14 @@
                 <div class="card-header">Solicitudes de Vacaciones</div>
                 <div class="card-body">
                     <ul id="vacationRequestsList" class="list-group list-group-flush">
-                        <li class="list-group-item">Juan Pérez - 15/11/2024 al 20/11/2024</li>
-                        <!-- Otras solicitudes -->
+                        @forelse ($vacationRequests as $request)
+                            <li class="list-group-item">
+                                {{ $request->user->name }} {{ $request->user->last_name }} -
+                                {{ $request->start_date }} al {{ $request->end_date }}
+                            </li>
+                        @empty
+                            <li class="list-group-item text-center">No hay solicitudes de vacaciones pendientes.</li>
+                        @endforelse
                     </ul>
                 </div>
             </div>
@@ -41,14 +47,33 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Juan Pérez</td>
-                                <td>Trabajando</td>
-                                <td>6h 30m</td>
-                                <td>30m</td>
-                                <td>12 días restantes</td>
-                            </tr>
-                            <!-- Otras filas -->
+                            @foreach ($workerDetails as $detail)
+                                <tr>
+                                    <td>{{ $detail['name'] }}</td>
+                                    <td>
+                                        @switch($detail['estado'])
+                                            @case('trabajando')
+                                                <span class="badge bg-success">Trabajando</span>
+                                            @break
+
+                                            @case('no_trabajando')
+                                                <span class="badge bg-danger">Sin trabajar</span>
+                                            @break
+
+                                            @case('descansando')
+                                                <span class="badge bg-secondary">Descansando</span>
+                                            @break
+
+                                            @case('de_vacaciones')
+                                                <span class="badge bg-info">De vacaciones</span>
+                                            @break
+                                        @endswitch
+                                    </td>
+                                    <td>{{ $detail['total_hours_worked'] }}</td>
+                                    <td>{{ $detail['total_breaks'] }}</td>
+                                    <td>{{ $detail['vacations_left'] }}</td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -69,13 +94,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Juan Pérez</td>
-                                </tr>
-                                <tr>
-                                    <td>María López</td>
-                                </tr>
-                                <!-- Añade más filas según sea necesario -->
+                                @forelse ($workerStatuses['trabajando'] as $worker)
+                                    <tr>
+                                        <td>{{ $worker->name }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td class="text-center">No hay trabajadores trabajando actualmente.</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
 
@@ -83,14 +110,19 @@
                         <table class="table table-danger table-bordered mb-3">
                             <thead>
                                 <tr>
-                                    <th colspan="2" class="text-center">No Trabajando</th>
+                                    <th colspan="2" class="text-center">Sin trabajar</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Carla Ruiz</td>
-                                </tr>
-                                <!-- Añade más filas según sea necesario -->
+                                @forelse ($workerStatuses['no_trabajando'] as $worker)
+                                    <tr>
+                                        <td>{{ $worker->name }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td class="text-center">No hay trabajadores sin trabajar actualmente.</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
 
@@ -102,10 +134,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Pablo Díaz</td>
-                                </tr>
-                                <!-- Añade más filas según sea necesario -->
+                                @forelse ($workerStatuses['descansando'] as $worker)
+                                    <tr>
+                                        <td>{{ $worker->name }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td class="text-center">No hay trabajadores descansando actualmente.</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
 
@@ -117,10 +154,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Ana Torres</td>
-                                </tr>
-                                <!-- Añade más filas según sea necesario -->
+                                @forelse ($workerStatuses['de_vacaciones'] as $worker)
+                                    <tr>
+                                        <td>{{ $worker->name }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td class="text-center">No hay trabajadores de vacaciones actualmente.</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -141,7 +183,12 @@
                 data: {
                     labels: ['Trabajando', 'No trabajando', 'Descansando', 'De vacaciones'],
                     datasets: [{
-                        data: [10, 5, 3, 2], // Ejemplo de datos
+                        data: [
+                            {{ $chartData['trabajando'] }},
+                            {{ $chartData['no_trabajando'] }},
+                            {{ $chartData['descansando'] }},
+                            {{ $chartData['de_vacaciones'] }}
+                        ],
                         backgroundColor: ['#28a745', '#dc3545', '#6c757d', '#007bff']
                     }]
                 },
@@ -154,6 +201,7 @@
                     }
                 }
             });
+
         });
     </script>
 @endsection
