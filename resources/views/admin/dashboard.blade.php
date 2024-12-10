@@ -22,8 +22,9 @@
                     <ul id="vacationRequestsList" class="list-group list-group-flush">
                         @forelse ($vacationRequests as $request)
                             <li class="list-group-item">
-                                {{ $request->user->name }} {{ $request->user->last_name }} -
-                                {{ $request->start_date }} al {{ $request->end_date }}
+                                {{ $request->user->name }} {{ $request->user->last_name }} - del
+                                <strong>{{ \Carbon\Carbon::parse($request->start_date)->format('d/m/Y') }} </strong>al
+                                <strong>{{ \Carbon\Carbon::parse($request->end_date)->format('d/m/Y') }} </strong>
                             </li>
                         @empty
                             <li class="list-group-item text-center">No hay solicitudes de vacaciones pendientes.</li>
@@ -177,7 +178,7 @@
             var workerStatusChart = new Chart(ctx, {
                 type: 'pie',
                 data: {
-                    labels: ['Trabajando', 'No trabajando', 'Descansando', 'De vacaciones'],
+                    labels: ['Trabajando', 'Sin trabajar', 'Descansando', 'De vacaciones'],
                     datasets: [{
                         data: [
                             {{ $chartData['trabajando'] }},
