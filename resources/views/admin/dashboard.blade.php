@@ -41,8 +41,6 @@
                             <tr>
                                 <th>Nombre</th>
                                 <th>Estado</th>
-                                <th>Horas Trabajadas</th>
-                                <th>Descansos</th>
                                 <th>Vacaciones</th>
                             </tr>
                         </thead>
@@ -69,8 +67,6 @@
                                             @break
                                         @endswitch
                                     </td>
-                                    <td>{{ $detail['total_hours_worked'] }}</td>
-                                    <td>{{ $detail['total_breaks'] }}</td>
                                     <td>{{ $detail['vacations_left'] }}</td>
                                 </tr>
                             @endforeach

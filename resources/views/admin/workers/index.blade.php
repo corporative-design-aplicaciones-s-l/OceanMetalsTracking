@@ -42,8 +42,16 @@
                     <td>{{ $worker->email }}</td>
                     <td>{{ $worker->telefono ?? 'No asignado' }}</td>
                     <td>
+
+                        <!-- Botón para abrir el listado de horas trabajadas -->
+                        <a href="{{ route('admin.workers.workdays', $worker->id) }}" class="btn btn-info btn-sm"
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ver horas">
+                            <i class="bi bi-eye"></i>
+                        </a>
                         <!-- Botón para abrir el modal de edición -->
-                        <button class="btn btn-warning btn-sm" onclick="openEditModal({{ $worker }})">Editar</button>
+                        <button class="btn btn-warning btn-sm"
+                            onclick="openEditModal({{ $worker }})"class="btn btn-info btn-sm" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Editar información"><i class="bi bi-pencil"></i></button>
 
                         <!-- Formulario para eliminar trabajador -->
                         <form action="{{ route('admin.workers.destroy', $worker->id) }}" method="POST"
@@ -51,7 +59,9 @@
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm"
-                                onclick="return confirm('¿Estás seguro de que deseas eliminar este trabajador?')">Borrar</button>
+                                onclick="return confirm('¿Estás seguro de que deseas eliminar este trabajador?')"
+                                class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                title="Borrar trabajador"><i class="bi bi-trash"></i></button>
                         </form>
                     </td>
                 </tr>
@@ -87,16 +97,6 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="editEstadoTrabajo" class="form-label">Estado de Trabajo</label>
-                                <select class="form-select" id="editEstadoTrabajo" name="estado_trabajo" required>
-                                    <option value="trabajando">Trabajando</option>
-                                    <option value="descansando">Descansando</option>
-                                    <option value="no_trabajando">No trabajando</option>
-                                    <option value="de_vacaciones">De vacaciones</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
                                 <label for="editTelefono" class="form-label">Teléfono</label>
                                 <input type="text" class="form-control" id="editTelefono" name="telefono">
                             </div>
@@ -117,7 +117,6 @@
                 // Asignar valores del trabajador seleccionado a los campos del formulario
                 document.getElementById('editName').value = worker.name;
                 document.getElementById('editLastName').value = worker.last_name || '';
-                document.getElementById('editEstadoTrabajo').value = worker.estado_trabajo;
                 document.getElementById('editTelefono').value = worker.telefono || '';
 
                 // Actualizar la acción del formulario para enviar la solicitud a la URL de actualización correcta

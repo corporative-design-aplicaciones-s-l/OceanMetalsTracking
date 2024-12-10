@@ -8,6 +8,7 @@ use App\Models\Workday;
 use App\Models\Vacation;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 
 class AdminController extends Controller
 {
@@ -42,55 +43,55 @@ class AdminController extends Controller
     }
 
     protected function getWorkerStatuses($workers, $currentDate)
-{
-    $workerStatuses = [
-        'trabajando' => [],
-        'no_trabajando' => [],
-        'descansando' => [],
-        'de_vacaciones' => [],
-    ];
+    {
+        $workerStatuses = [
+            'trabajando' => [],
+            'no_trabajando' => [],
+            'descansando' => [],
+            'de_vacaciones' => [],
+        ];
 
-    $workers->each(function ($worker) use ($currentDate, &$workerStatuses) {
-        // Verificar si está de vacaciones
-        $vacation = Vacation::where('user_id', $worker->id)
-            ->where('validated', true)
-            ->whereDate('start_date', '<=', $currentDate)
-            ->whereDate('end_date', '>=', $currentDate)
-            ->first();
-
-        if ($vacation) {
-            $workerStatuses['de_vacaciones'][] = $worker;
-        } else {
-            // Verificar en la tabla de workdays
-            $workday = Workday::where('user_id', $worker->id)
-                ->where('date', $currentDate)
+        $workers->each(function ($worker) use ($currentDate, &$workerStatuses) {
+            // Verificar si está de vacaciones
+            $vacation = Vacation::where('user_id', $worker->id)
+                ->where('validated', true)
+                ->whereDate('start_date', '<=', $currentDate)
+                ->whereDate('end_date', '>=', $currentDate)
                 ->first();
 
-            if ($workday) {
-                if (!$workday->end_time) {
-                    if ($workday->break_start_time) {
-                        $breakEndTime = Carbon::parse($workday->break_start_time)
-                            ->addMinutes($workday->break_minutes);
+            if ($vacation) {
+                $workerStatuses['de_vacaciones'][] = $worker;
+            } else {
+                // Verificar en la tabla de workdays
+                $workday = Workday::where('user_id', $worker->id)
+                    ->where('date', $currentDate)
+                    ->first();
 
-                        if (Carbon::now()->lt($breakEndTime)) {
-                            $workerStatuses['descansando'][] = $worker;
+                if ($workday) {
+                    if (!$workday->end_time) {
+                        if ($workday->break_start_time) {
+                            $breakEndTime = Carbon::parse($workday->break_start_time)
+                                ->addMinutes($workday->break_minutes);
+
+                            if (Carbon::now()->lt($breakEndTime)) {
+                                $workerStatuses['descansando'][] = $worker;
+                            } else {
+                                $workerStatuses['trabajando'][] = $worker;
+                            }
                         } else {
                             $workerStatuses['trabajando'][] = $worker;
                         }
                     } else {
-                        $workerStatuses['trabajando'][] = $worker;
+                        $workerStatuses['no_trabajando'][] = $worker;
                     }
                 } else {
                     $workerStatuses['no_trabajando'][] = $worker;
                 }
-            } else {
-                $workerStatuses['no_trabajando'][] = $worker;
             }
-        }
-    });
+        });
 
-    return $workerStatuses;
-}
+        return $workerStatuses;
+    }
 
 
     protected function getWorkerDetails($workers)
@@ -161,6 +162,68 @@ class AdminController extends Controller
         }
 
         return 'no_trabajando';
+    }
+
+    public function showWorkdays(Request $request, User $worker, $year = null, $month = null)
+    {
+        // Determinar el mes y año actual si no se proporcionan
+        $year ??= Carbon::now()->year;
+        $month ??= Carbon::now()->month;
+
+        // Variable para verificar si el mes actual es el que se está visualizando
+        $isCurrentMonth = $year == Carbon::now()->year && $month == Carbon::now()->month;
+
+        // Obtener todas las jornadas del mes actual para el usuario
+        $workdays = Workday::where('user_id', $worker->id)
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->orderBy('date')
+            ->get();
+
+        // Agrupar las jornadas por día y calcular el total de horas sin descanso
+        $workdays = $workdays->map(function ($workday) {
+            $start = Carbon::parse("{$workday->date} {$workday->start_time}");
+
+            // Si la jornada no ha terminado, mostrar '0h 0m' para total_hours
+            if (!$workday->end_time) {
+                return [
+                    'date' => $workday->date,
+                    'day_of_week' => Carbon::parse($workday->date)->locale('es')->isoFormat('dddd'),
+                    'start_time' => $workday->start_time,
+                    'end_time' => '--:--',
+                    'break_minutes' => $workday->break_minutes,
+                    'total_hours' => '0h 0m',
+                ];
+            }
+
+            $end = Carbon::parse("{$workday->date} {$workday->end_time}");
+
+            // Calcular la duración total sin incluir el descanso
+            $duration = $start->diffInMinutes($end) - $workday->break_minutes;
+            $duration = max(0, $duration); // Asegurarse de que no sea negativo
+
+
+            $hours = intdiv($duration, 60);
+            $minutes = $duration % 60;
+
+            return [
+                'date' => $workday->date,
+                'day_of_week' => Carbon::parse($workday->date)->locale('es')->isoFormat('dddd'),
+                'start_time' => $workday->start_time,
+                'end_time' => $workday->end_time,
+                'break_minutes' => $workday->break_minutes,
+                'total_hours' => "{$hours}h {$minutes}m",
+            ];
+        });
+
+        return view('admin.workdays', [
+            'worker' => $worker,
+            'workdays' => $workdays,
+            'currentMonth' => Carbon::create($year, $month)->locale('es')->isoFormat('MMMM YYYY'),
+            'prevMonth' => Carbon::create($year, $month)->subMonth(),
+            'nextMonth' => Carbon::create($year, $month)->addMonth(),
+            'isCurrentMonth' => $isCurrentMonth,
+        ]);
     }
 
 

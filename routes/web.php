@@ -44,6 +44,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/vacations', [AdminVacationController::class, 'index'])->name('vacations');
         Route::post('/vacations/{id}/validate', [AdminVacationController::class, 'validateVacations']);
         Route::post('/vacations/{id}/decline', [AdminVacationController::class, 'declineVacations']);
+        Route::get('/workers/{worker}/workdays/{year?}/{month?}', [AdminController::class, 'showWorkdays'])->name('workers.workdays');
+
     });
 
 

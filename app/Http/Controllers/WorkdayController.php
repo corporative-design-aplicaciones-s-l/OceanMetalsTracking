@@ -94,7 +94,7 @@ class WorkdayController extends Controller
 
         // Encontrar la última jornada laboral del día actual para el usuario sin hora de fin
         $workday = Workday::where('user_id', $user->id)
-            ->where('date', Carbon::now()->toDateString())
+            // ->where('date', Carbon::now()->toDateString())
             ->whereNull('end_time')
             ->orderBy('start_time', 'desc')
             ->first();
@@ -108,7 +108,7 @@ class WorkdayController extends Controller
         return response()->json(['status' => 'error', 'message' => 'No hay jornada en curso para finalizar'], 400);
     }
 
-    // Método para registrar el descanso
+    // Método para registrar el descanso TODO:
     public function applyBreak(Request $request)
     {
         $user = Auth::user();

@@ -43,12 +43,6 @@
                                 <i class="bi bi-box-arrow-in-right"></i>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}" data-bs-toggle="tooltip"
-                                data-bs-placement="bottom" title="Registrarse">
-                                <i class="bi bi-person-plus"></i>
-                            </a>
-                        </li>
                     @else
                         <!-- Enlaces solo para usuarios autenticados -->
                         <li class="nav-item">
