@@ -70,7 +70,7 @@
     /* Ocultar texto por defecto */
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 783px) {
     .sidebar-logo {
         display: none;
         /* Ocultar logo en móvil */

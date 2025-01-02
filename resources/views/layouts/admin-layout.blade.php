@@ -41,7 +41,7 @@
 
         <div class="row">
             <!-- Sidebar Izquierdo -->
-            <div class="col-lg-1 bg-dark sidebar text-center collapse d-lg-block align-items-center" id="sidebarMenu"
+            <div class="col-md-1 bg-dark sidebar text-center collapse d-md-block align-items-center" id="sidebarMenu"
                 style="height: calc(100vh);">
                 <a class="navbar-brand sidebar-logo" href="{{ auth()->check() ? url('/admin/dashboard') : url('/') }}">
                     <img width="100%" height="auto" class="mt-2" src="{{ asset('images/logo/logo_navbar.png') }}"
