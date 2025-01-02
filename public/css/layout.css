@@ -1,20 +1,16 @@
-/* Aumentar tamaño de los íconos en el navbar */
-.navbar-nav .nav-link i {
-    font-size: 1.5rem; /* Ajusta el tamaño según tus necesidades */
-}
-
 /* Sombra para el logo del navbar */
 /* Sombra para el logo del navbar que sigue la forma del PNG */
 .navbar-brand img {
-    filter: drop-shadow(
-        0px 4px 8px rgba(0, 0, 0, 0.5)
-    ); /* Ajusta la sombra a tus necesidades */
+    filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.5));
+    /* Ajusta la sombra a tus necesidades */
 }
 
+/* Contenedor de alertas flotantes centrado */
 .floating-alert-container {
     position: fixed;
-    top: 1rem;
-    right: 1rem;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 1050;
 }
 
@@ -34,10 +30,13 @@
         opacity: 0;
         transform: translateY(-10px);
     }
-    10%, 90% {
+
+    10%,
+    90% {
         opacity: 1;
         transform: translateY(0);
     }
+
     100% {
         opacity: 0;
         transform: translateY(-10px);
@@ -52,3 +51,47 @@
     cursor: pointer;
 }
 
+.sidebar-icon {
+    font-size: 1.8rem;
+    /* Tamaño de iconos en escritorio */
+}
+.nav-icon {
+    font-size: 1.5rem;
+    /* Tamaño de iconos en escritorio */
+}
+
+.nav-link {
+    justify-content: center;
+    /* Alinear contenido en el centro para escritorio */
+}
+
+.sidebar-text {
+    display: none;
+    /* Ocultar texto por defecto */
+}
+
+@media (max-width: 768px) {
+    .sidebar-logo {
+        display: none;
+        /* Ocultar logo en móvil */
+    }
+
+    .sidebar-icon {
+        font-size: 1.2rem;
+        /* Reducir tamaño del icono */
+    }
+
+    .sidebar-text {
+        display: inline;
+        /* Mostrar texto en móvil */
+        font-size: 0.875rem;
+        /* Texto más pequeño */
+    }
+
+    .nav-link {
+        justify-content: flex-start;
+        /* Alinear contenido al inicio en móvil */
+        gap: 0.5rem;
+        /* Espacio entre icono y texto */
+    }
+}

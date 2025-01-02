@@ -7,7 +7,7 @@
         <div class="row">
             <!-- Columna Izquierda: Calendario de vacaciones -->
             <div class="col-md-8">
-                <div class="card">
+                <div class="card mb-4 mb-md-0">
                     <div class="card-header">
                         <i class="bi bi-calendar3"></i> Calendario de Vacaciones
                     </div>

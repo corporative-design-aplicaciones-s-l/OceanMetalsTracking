@@ -34,7 +34,7 @@
             </div>
 
             <!-- Card de Información Desglosada por Trabajador -->
-            <div class="card">
+            <div class="card mb-4 mb-md-0">
                 <div class="card-header">Información por Trabajador</div>
                 <div class="card-body">
                     <table class="table table-striped">
@@ -79,7 +79,7 @@
 
         <!-- Columna Derecha: Información Detallada de Trabajadores -->
         <div class="col-md-4">
-            <div class="card mb-4 h-100">
+            <div class="card h-100">
                 <div class="card-header">Información Detallada</div>
                 <div class="card-body">
                     <div class="table-responsive">

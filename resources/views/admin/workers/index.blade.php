@@ -27,7 +27,7 @@
                             @break
 
                             @case('no_trabajando')
-                                <span class="badge bg-danger">No trabajando</span>
+                                <span class="badge bg-danger">Sin trabajar</span>
                             @break
 
                             @case('descansando')
@@ -44,13 +44,13 @@
                     <td>
 
                         <!-- Botón para abrir el listado de horas trabajadas -->
-                        <a href="{{ route('admin.workers.workdays', $worker->id) }}" class="btn btn-info btn-sm"
+                        <a href="{{ route('admin.workers.workdays', $worker->id) }}" class="btn btn-info btn-sm mb-1"
                             data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ver horas">
                             <i class="bi bi-eye"></i>
                         </a>
                         <!-- Botón para abrir el modal de edición -->
-                        <button class="btn btn-warning btn-sm"
-                            onclick="openEditModal({{ $worker }})"class="btn btn-info btn-sm" data-bs-toggle="tooltip"
+                        <button class="btn btn-warning btn-sm mb-1"
+                            onclick="openEditModal({{ $worker }})" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Editar información"><i class="bi bi-pencil"></i></button>
 
                         <!-- Formulario para eliminar trabajador -->
@@ -58,7 +58,7 @@
                             style="display:inline-block;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm"
+                            <button type="submit" class="btn btn-danger btn-sm mb-1"
                                 onclick="return confirm('¿Estás seguro de que deseas eliminar este trabajador?')"
                                 class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom"
                                 title="Borrar trabajador"><i class="bi bi-trash"></i></button>

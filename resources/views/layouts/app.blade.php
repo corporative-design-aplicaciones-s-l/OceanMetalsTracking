@@ -42,7 +42,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}" data-bs-toggle="tooltip"
                                 data-bs-placement="bottom" title="Iniciar Sesión">
-                                <i class="bi bi-box-arrow-in-right"></i>
+                                <i class="bi bi-box-arrow-in-right"></i><span class="sidebar-text ms-2">Iniciar Sesion</span> <!-- Solo visible en móvil -->
                             </a>
                         </li>
                     @else
@@ -50,32 +50,32 @@
                         <li class="nav-item">
                             <a class="nav-link" href={{ route('home') }} data-bs-toggle="tooltip" data-bs-placement="bottom"
                                 title="Inicio">
-                                <i class="bi bi-house-door"></i>
+                                <i class="bi bi-house-door nav-icon"></i><span class="sidebar-text ms-2">Inicio</span> <!-- Solo visible en móvil -->
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('vacations.index') }}" data-bs-toggle="tooltip"
                                 data-bs-placement="bottom" title="Registro de Vacaciones">
-                                <i class="bi bi-calendar3"></i>
+                                <i class="bi bi-calendar3 nav-icon"></i><span class="sidebar-text ms-2">Registro de Vacaciones</span> <!-- Solo visible en móvil -->
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('workdays.index') }}" data-bs-toggle="tooltip"
                                 data-bs-placement="bottom" title="Horas Diarias">
-                                <i class="bi bi-clock-history"></i>
+                                <i class="bi bi-clock-history nav-icon"></i><span class="sidebar-text ms-2">Horas Diarias</span> <!-- Solo visible en móvil -->
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('profile.show') }}" data-bs-toggle="tooltip"
                                 data-bs-placement="bottom" title="Perfil">
-                                <i class="bi bi-person-circle"></i>
+                                <i class="bi bi-person-circle nav-icon"></i><span class="sidebar-text ms-2">Perfil</span> <!-- Solo visible en móvil -->
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                                 data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cerrar Sesión">
-                                <i class="bi bi-box-arrow-right"></i>
+                                <i class="bi bi-box-arrow-right nav-icon"></i><span class="sidebar-text ms-2">Cerrar Sesión</span> <!-- Solo visible en móvil -->
                             </a>
                         </li>
                         <!-- Formulario de cierre de sesión (necesario para hacer logout con seguridad) -->
@@ -94,8 +94,8 @@
 
     @yield('scripts')
 
-    <!-- Activar tooltips -->
     <script>
+        // Activar tooltips
         document.addEventListener('DOMContentLoaded', function() {
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
             var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {

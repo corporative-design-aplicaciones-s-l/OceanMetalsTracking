@@ -42,7 +42,7 @@
                 </div>
 
                 <!-- Sección Descanso -->
-                <div class="card ">
+                <div class="card mb-4 mb-md-0">
                     <div class="card-header">
                         <i class="bi bi-cup-fill"></i> Descanso (intervalo de descanso)
                     </div>

@@ -8,7 +8,7 @@
             <!-- Flecha Mes Anterior -->
             <a href="{{ route('workdays.index', ['year' => $prevMonth->year, 'month' => $prevMonth->month]) }}"
                 class="btn btn-outline-success">
-                <i class="bi bi-chevron-left"></i> Mes Anterior
+                <i class="bi bi-chevron-left"></i>
             </a>
 
             <h4>{{ ucfirst($currentMonth) }}</h4>
@@ -16,43 +16,44 @@
             <!-- Flecha Mes Siguiente -->
             @if ($isCurrentMonth)
                 <button class="btn btn-outline-secondary" disabled>
-                    Mes Siguiente <i class="bi bi-chevron-right"></i>
+                     <i class="bi bi-chevron-right"></i>
                 </button>
             @else
                 <a href="{{ route('workdays.index', ['year' => $nextMonth->year, 'month' => $nextMonth->month]) }}"
                     class="btn btn-outline-success">
-                    Mes Siguiente <i class="bi bi-chevron-right"></i>
+                     <i class="bi bi-chevron-right"></i>
                 </a>
             @endif
         </div>
 
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Día</th>
-                    <th>Inicio Jornada</th>
-                    <th>Fin Jornada</th>
-                    <th>Descanso</th>
-                    <th>Total Horas</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($workdays as $workday)
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
                     <tr>
-                        <td>{{ \Carbon\Carbon::parse($workday['date'])->format('d') }} -
-                            {{ ucfirst($workday['day_of_week']) }}</td>
-                        <td>{{ $workday['start_time'] }}</td>
-                        <td>{{ $workday['end_time'] }}</td>
-                        <td>{{ $workday['break_minutes'] }} minutos</td>
-                        <td>{{ $workday['total_hours'] }}</td>
+                        <th>Día</th>
+                        <th>Inicio </th>
+                        <th>Fin</th>
+                        <th>Descanso</th>
+                        <th>Total Horas</th>
                     </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" class="text-center">No hay registros para este mes.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-
+                </thead>
+                <tbody>
+                    @forelse ($workdays as $workday)
+                        <tr>
+                            <td>{{ \Carbon\Carbon::parse($workday['date'])->format('d') }} -
+                                {{ ucfirst($workday['day_of_week']) }}</td>
+                            <td>{{ $workday['start_time'] }}</td>
+                            <td>{{ $workday['end_time'] }}</td>
+                            <td>{{ $workday['break_minutes'] }} '</td>
+                            <td>{{ $workday['total_hours'] }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center">No hay registros para este mes.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 @endsection
