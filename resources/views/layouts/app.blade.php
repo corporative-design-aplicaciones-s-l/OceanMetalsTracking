@@ -42,7 +42,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}" data-bs-toggle="tooltip"
                                 data-bs-placement="bottom" title="Iniciar Sesión">
-                                <i class="bi bi-box-arrow-in-right"></i><span class="sidebar-text ms-2">Iniciar Sesion</span> <!-- Solo visible en móvil -->
+                                <i class="bi bi-box-arrow-in-right nav-icon"></i><span class="sidebar-text ms-2">Iniciar Sesion</span> <!-- Solo visible en móvil -->
                             </a>
                         </li>
                     @else
