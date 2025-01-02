@@ -27,7 +27,7 @@
     <!-- Navbar para dispositivos móviles -->
     <nav class="navbar navbar-dark bg-dark d-md-none">
         <div class="container-fluid">
-            <a class="navbar-brand ms-2" href="{{ url('/') }}">
+            <a class="navbar-brand ms-2" href="{{ auth()->check() ? url('/admin/dashboard') : url('/') }}">
                 <img width="150px" height="auto" src="{{ asset('images/logo/logo_navbar.png') }}" alt="logo">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu"
