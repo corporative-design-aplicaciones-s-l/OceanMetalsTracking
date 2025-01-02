@@ -62,15 +62,35 @@ class WorkerController extends Controller
         return view('admin.workers.index', compact('workers'));
     }
 
-    public function edit(User $worker)
+    public function update(Request $request, $id)
     {
-        return view('admin.workers.edit', compact('worker'));
+        // Validar los datos del formulario
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'telefono' => 'nullable|string|min:9|max:15',
+        ]);
+
+        // Buscar al trabajador por su ID
+        $worker = User::findOrFail($id);
+
+        // Actualizar los campos del trabajador
+        $worker->name = $request->input('name');
+        $worker->last_name = $request->input('last_name');
+        $worker->telefono = $request->input('telefono');
+
+        // Guardar los cambios
+        $worker->save();
+
+        // Redirigir con mensaje de éxito
+        return redirect()->route('admin.workers.index')->with(['status' => 'success', 'message' => 'Trabajador actualizado correctamente.']);
     }
+
 
     public function destroy(User $worker)
     {
         $worker->delete();
-        return redirect()->route('admin.workers.index')->with('success', 'Trabajador eliminado con éxito.');
+        return redirect()->route('admin.workers.index')->with(['status' => 'success', 'message' => 'Trabajador eliminado con éxito.']);
     }
 
     public function createWorker()
@@ -99,7 +119,7 @@ class WorkerController extends Controller
         $token = app('auth.password.broker')->createToken($worker);
         $worker->notify(new SetPasswordNotification($token));
 
-        return redirect()->route('admin.workers.index')->with('success', 'Trabajador registrado y correo enviado para creación de contraseña.');
+        return redirect()->route('admin.workers.index')->with(['status' => 'success', 'message' => 'Trabajador registrado y correo enviado para creación de contraseña.']);
     }
 
 }

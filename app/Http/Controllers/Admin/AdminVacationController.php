@@ -36,7 +36,7 @@ class AdminVacationController extends Controller
         $vacation = Vacation::findOrFail($id);
         $vacation->update(['validated' => true]);
 
-        return response()->json(['status' => 'success']);
+        return redirect()->route('admin.workers.adminvacations')->with(['status' => 'success', 'message' => 'Vacaciones validadas']);
     }
 
     public function declineVacations($id)
@@ -44,6 +44,6 @@ class AdminVacationController extends Controller
         $vacation = Vacation::findOrFail($id);
         $vacation->update(['refused' => true]);
 
-        return response()->json(['status' => 'success']);
+        return with(['status' => 'success', 'message' => 'Vacaciones declinadas']);
     }
 }

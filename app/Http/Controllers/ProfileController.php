@@ -16,6 +16,7 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
+
         $request->validate([
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -36,6 +37,6 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return redirect()->route('profile.show')->with('status', 'Perfil actualizado correctamente.');
+        return redirect()->route('profile.show')->with(['status' => 'success', 'message' => 'Perfil actualizado correctamente.']);
     }
 }

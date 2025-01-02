@@ -121,7 +121,7 @@
 
                 // Actualizar la acción del formulario para enviar la solicitud a la URL de actualización correcta
                 const form = document.getElementById('editWorkerForm');
-                form.action = `/admin/workers/${worker.id}`;
+                form.action = `/admin/workers/${worker.id}/update`;
 
                 // Abrir el modal
                 var editWorkerModal = new bootstrap.Modal(document.getElementById('editWorkerModal'));

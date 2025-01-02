@@ -21,6 +21,8 @@
 </head>
 
 <body>
+    <!-- Contenedor de alertas flotantes -->
+    <div id="alertContainer" class="floating-alert-container position-fixed top-0 end-0 p-3" style="z-index: 1055;"></div>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
@@ -99,6 +101,34 @@
             var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl)
             })
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const alertContainer = document.getElementById('alertContainer');
+
+            // Cargar mensajes desde el backend
+            const status = "{{ session('status') }}";
+            const message = "{{ session('message') }}";
+
+            if (status && message) {
+                createAlert(status, message);
+            }
+
+            function createAlert(type, message) {
+                const alert = document.createElement('div');
+                alert.className = `floating-alert alert alert-${type}`;
+                alert.innerHTML = `
+            <span>${message}</span>
+            <button class="alert-close" onclick="this.parentElement.remove()">&times;</button>
+        `;
+
+                alertContainer.appendChild(alert);
+
+                // Eliminar la alerta automáticamente después de 5 segundos
+                setTimeout(() => {
+                    alert.remove();
+                }, 5000);
+            }
         });
     </script>
 </body>

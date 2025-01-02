@@ -64,7 +64,7 @@ class VacationController extends Controller
             'refused' => false,
         ]);
 
-        return redirect()->route('vacations.index')->with('success', 'Solicitud de vacaciones enviada.');
+        return redirect()->route('vacations.index')->with(['status'=>'success', 'message' =>'Solicitud de vacaciones enviada.']);
     }
 
     protected function getVacationDates($userId)

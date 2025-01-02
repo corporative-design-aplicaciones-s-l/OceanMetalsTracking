@@ -38,7 +38,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
         Route::get('workers', [WorkerController::class, 'index'])->name('workers.index');
         Route::get('create_worker', [WorkerController::class, 'createWorker'])->name('create_worker');
-        Route::get('workers/{worker}/edit', [WorkerController::class, 'edit'])->name('workers.edit');
+        Route::put('workers/{worker}/update', [WorkerController::class, 'update'])->name('workers.update');
         Route::delete('workers/{worker}', [WorkerController::class, 'destroy'])->name('workers.destroy');
         Route::post('register-worker', [WorkerController::class, 'registerWorker'])->name('registerWorker');
         Route::get('/vacations', [AdminVacationController::class, 'index'])->name('vacations');
